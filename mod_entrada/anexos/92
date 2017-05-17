@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>HTML 5 - Geolocalização</title>
+</head>
+<body onload="init();">
+	<h1>HTML5 Geolocalização</h1>
+
+	<span class="info">
+		<p id="status">HTML5 Geolocalização <strong>não</strong> é suportado pelo navegador</p>	
+	</span>
+	<h2>Posição atual: </h2>
+	<table border="1">
+		<tr>
+			<th>Latitude</th>
+			<td id="latitude">-</td>
+		</tr>
+		<tr>
+			<th>Longitude</th>
+			<td id="longitude">-</td>
+		</tr>
+		<tr>
+			<th>Precisão</th>
+			<td id="accuracy">-</td>
+		</tr>
+	</table>
+	<p id="link"></p>
+
+	<script>
+		function init(){
+			loadPosition();
+		}	
+
+		function loadPosition(){
+			if (navigator.geolocation) {
+				document.getElementById('status').innerHTML = "Seu navegador suporta HTML5";
+				navigator.geolocation.getCurrentPosition(funcaoSucesso,funcaoErro);
+			}
+		}
+
+		function funcaoSucesso(posicao){
+			var latitude = posicao.coords.latitude;
+			var longitude = posicao.coords.longitude;
+			var precisao = posicao.coords.accuracy;
+
+			if (!latitude || !longitude) {
+				document.getElementById("status").innerHTML = "Não foi possível consultar sua localização";
+				return;
+			}
+
+			document.getElementById('latitude').innerHTML = latitude;
+			document.getElementById('longitude').innerHTML = longitude;
+			document.getElementById('accuracy').innerHTML = precisao+" metros";
+
+			document.getElementById('link').innerHTML = '<a href="https://google.com/maps/dir/'+latitude+','+longitude+'/Avenida Vicente Machado,363-Centro" target="_blank">Como Chegar</a>'
+		}
+
+		function funcaoErro(posicao){
+			alert("Erro");
+		}
+	</script>
+</body>
+</html>
+
+
+
+sgacarambei.postgresql.dbaas.com.br

@@ -1,0 +1,84 @@
+CREATE TABLE usuario(
+  id_usuario serial,
+  nome varchar(255),
+  cpf varchar(255),
+  login varchar(255),
+  email varchar(255),
+  senha varchar(255),
+  PRIMARY KEY (id_usuario)
+);
+
+CREATE TABLE departamento (
+  id_departamento serial,
+  nome varchar(255),
+  id_secretaria integer REFERENCES (id_secretaria),
+  PRIMARY KEY (id_departamento)
+);
+
+CREATE TABLE secretaria(
+  id_secretaria serial,
+  nome varchar(255),
+  PRIMARY KEY (id_secretaria)
+);
+
+insert into secretaria (nome) values ('Meio Ambiente');
+insert into usuario (nome) values ('Educação');
+insert into secretaria (nome) values ('Financeiro');
+insert into secretaria (nome) values ('Administração e Negócios Jurídicos');
+insert into secretaria (nome) values ('Desenvolvimento');
+insert into secretaria (nome) values ('Obras');
+insert into secretaria (nome) values ('Saude');
+
+CREATE TABLE fornecedor (
+  id_fornecedor serial,
+  nome varchar(255),
+  data_ini varchar(255),
+  data_fim varchar(255),
+  contato varchar(255),
+  email varchar(255),
+  cnpj varchar(255),
+  PRIMARY KEY (id_fornecedor)
+);
+
+CREATE TABLE unidade (
+  id_unidade serial,
+  nome varchar(255),
+  PRIMARY KEY (id_unidade)
+);
+
+insert into unidade(nome) values('Resma');
+insert into unidade(nome) values('Litro');
+insert into unidade(nome) values('Unidade');
+insert into unidade(nome) values('Quilograma');
+insert into unidade(nome) values('Fardo');
+
+CREATE TABLE produto (
+  id_produto serial,
+  nome varchar(255),
+  unidade integer REFERENCES unidade(id_unidade),
+  PRIMARY KEY (id_produto)
+);
+
+CREATE TABLE entrada(
+  id_entrada serial,
+  id_produto integer REFERENCES produto(id_produto),
+  id_fornecedor integer REFERENCES fornecedor(id_fornecedor),
+  id_unidade integer REFERENCES unidade(id_unidade),
+  quantidade integer,
+  data_ent TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_entrada));
+
+CREATE TABLE saida(
+  id_saida serial,
+  id_departamento integer REFERENCES departamento(id_departamento),
+  id_produto integer REFERENCES produto(id_produto),
+  quantidade integer,
+  data_sai TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_saida));
+
+CREATE TABLE situacao(
+  id_situacao serial,
+  id_entrada integer REFERENCES entrada(id_entrada),
+  id_saida integer REFERENCES saida(id_saida),
+  id_fornecedor integer REFERENCES fornecedor(id_fornecedor),
+  PRIMARY KEY(id_situacao));
